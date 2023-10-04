@@ -2,24 +2,18 @@ version: '3'
 services:
   cpp:
     build: ./CPP/
-    
+
   py:
     build: ./PY/
 
   mysql:
     build: ./MySQL/
     hostname: mysql
-    environment: 
+    environment:
       MYSQL_ROOT_PASSWORD: "root_password"
       MYSQL_ALLOW_EMPTY_PASSWORD: "password"
       MYSQL_RANDOM_ROOT_PASSWORD: "password"
       MYSQL_DATABASE: "database"
 
-
-
-
-
-
-
-
-
+  mongodb:
+    build: ./MongoDB/
