@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  buyer: MyString
+  type_of_tank: MyString
+  completed: false
+
+two:
+  buyer: MyString
+  type_of_tank: MyString
+  completed: false

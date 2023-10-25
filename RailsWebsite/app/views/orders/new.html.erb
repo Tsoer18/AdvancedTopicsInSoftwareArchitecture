@@ -1,0 +1,12 @@
+<h1> Buy tank form</h1>
+
+<%= form_with model: @order do |form| %>
+  <%= form.label :buyer %>
+  <%= form.text_field :buyer %>
+  <br>
+  <%= form.label :type_of_tank %>
+  <%= form.text_field :type_of_tank %>
+  <br>
+
+  <%= form.submit "Buy" %>
+<% end %>
