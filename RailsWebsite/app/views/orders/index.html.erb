@@ -6,10 +6,10 @@
   <%= "Order ID: " + order.id.to_s %> <br>
   <%= "Order buyer: " + order.buyer.to_s %> <br>
   <%=" Type of tank: " + order.type_of_tank.to_s  %> <br>
+  <%= "Order completed? " + order.completed?.to_s %> <br>
   <%= "-"*50 %>
   <br>
 <% end %>
 
 
 <%= button_to "Buy a tank here!", new_order_path, method: :get%>
-

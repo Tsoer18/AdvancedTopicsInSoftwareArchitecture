@@ -1,3 +1,3 @@
 class Order < ApplicationRecord
-  enum type_of_tank: {red:1, blue:2,green:3}
+  enum type_of_tank: {red: 0, blue: 1,green: 2}
 end

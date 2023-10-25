@@ -5,8 +5,7 @@
   <%= form.text_field :buyer %>
   <br>
   <%= form.label :type_of_tank %>
-  <%= form.text_field :type_of_tank %>
+  <%= form.select :type_of_tank, options_for_select(@types_of_tank.keys.map{|key| [key.humanize,key]}) %>
   <br>
-
   <%= form.submit "Buy" %>
 <% end %>
