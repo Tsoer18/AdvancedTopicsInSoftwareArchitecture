@@ -1,7 +1,11 @@
 version: '3'
 services:
+  cpp:
+    build: ./CPP/
+
   py:
     build: ./PY/
+
   mysql:
     build: ./MySQL/
     hostname: mysql
@@ -10,5 +14,7 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: "password"
       MYSQL_RANDOM_ROOT_PASSWORD: "password"
       MYSQL_DATABASE: "database"
-  #mongodb:
-  #  build: ./MongoDB/
+
+
+  
+  
