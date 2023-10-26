@@ -128,6 +128,7 @@ GEM
     matrix (0.4.2)
     mini_mime (1.1.5)
     minitest (5.20.0)
+    mqtt-rails (1.0.1)
     msgpack (1.7.2)
     mutex_m (0.1.2)
     net-imap (0.4.2)
@@ -247,6 +248,7 @@ DEPENDENCIES
   error_highlight (>= 0.4.0)
   importmap-rails
   jbuilder
+  mqtt-rails
   puma (>= 5.0)
   rails (~> 7.1.1)
   selenium-webdriver

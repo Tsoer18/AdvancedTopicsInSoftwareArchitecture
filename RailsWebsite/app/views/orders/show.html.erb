@@ -1,0 +1,6 @@
+<h1>Order number: <%= @order.id %> </h1>
+<p> Order buyer: <%=@order.buyer %></p>
+<p> Order type: <%= @order.type_of_tank %></p>
+<%unless @order.completed %>
+  <%= button_to "Start order", start_order_path(@order) %>
+<%end %>

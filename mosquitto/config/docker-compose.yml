@@ -1,9 +1,6 @@
-
 version: "3.7"
 services:
-  py:
-    build: ./PY/
-    
+
   # mqtt5 eclipse-mosquitto
   mqtt5:
     image: eclipse-mosquitto

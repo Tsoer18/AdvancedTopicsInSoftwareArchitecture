@@ -10,4 +10,6 @@ Rails.application.routes.draw do
   # root "posts#index"
   root "orders#index"
 
+  post '/start/order/:id', to: "orders#start", as: 'start_order'
+
 end
