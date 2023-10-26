@@ -19,7 +19,7 @@ def mock_data(client):
         time.sleep(2)
 
 broker = 'mqtt5'
-port = 9001
+port = 1883
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
@@ -32,5 +32,3 @@ client.connect(broker, port)
 client.loop_start()
 
 mock_data(client)
-
-

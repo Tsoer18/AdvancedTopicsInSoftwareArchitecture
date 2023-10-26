@@ -6,14 +6,14 @@ services:
   py:
     build: ./PY/
 
-  mysql:
-    build: ./MySQL/
-    hostname: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: "root_password"
-      MYSQL_ALLOW_EMPTY_PASSWORD: "password"
-      MYSQL_RANDOM_ROOT_PASSWORD: "password"
-      MYSQL_DATABASE: "database"
+  #mysql:
+    #build: ./MySQL/
+    #hostname: mysql
+    #environment:
+      #MYSQL_ROOT_PASSWORD: "root_password"
+      #MYSQL_ALLOW_EMPTY_PASSWORD: "password"
+      #MYSQL_RANDOM_ROOT_PASSWORD: "password"
+      #MYSQL_DATABASE: "database"
 
 
   

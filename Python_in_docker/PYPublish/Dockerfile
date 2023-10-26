@@ -7,4 +7,4 @@ WORKDIR /usr/app/src
 
 COPY mqttconnector.py ./
 
-CMD [ "python","./mqttconnector.py" ]
+CMD [ "python","-u","./mqttconnector.py" ]

@@ -1,10 +1,13 @@
-
 version: "3.7"
 services:
   pypublish:
     build: ./PYPublish/
+    depends_on:
+      - mqtt5
   pysubscribe:
     build: ./PYSubscribe/
+    depends_on:
+      - mqtt5
   mqtt5:
     image: eclipse-mosquitto
     container_name: mqtt5
@@ -21,7 +24,3 @@ volumes:
   config:
   data:
   log:
-
-
-
-
