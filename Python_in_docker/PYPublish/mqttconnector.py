@@ -1,6 +1,8 @@
 import paho.mqtt.client as mqtt
 import time
-from threading import Thread
+import json
+import random
+import datetime;
 
 
 
@@ -13,8 +15,19 @@ def on_connect(client, userdata, flags, rc):
 
 def mock_data(client):
     while True:
+        location = random.choice(["WheelR","TrackR","GunR","weldingR","AmmoR"])
+        ct = str(datetime.datetime.now())
 
-        client.publish("testtopic","ON")
+        data = {
+            "status": random.choice(["ON", "OFF"]),  # Randomly select "ON" or "OFF"
+            "placementx": random.uniform(0, 100),
+            "placementy": random.uniform(0, 100),
+            "location": location,
+            "timestamp": ct
+        }
+
+        payload = json.dumps(data)
+        client.publish("Sensors/"+location+"/Robots",payload)
 
         time.sleep(2)
 

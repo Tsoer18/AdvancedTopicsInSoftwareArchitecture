@@ -1,8 +1,6 @@
 import paho.mqtt.client as mqtt
-import time
-from threading import Thread
 from PYmongoGetDatabase import get_database
-import datetime;
+import json
 
 CONNECTION_STRING = "some string"
 
@@ -25,15 +23,22 @@ port = 1883
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
     collection_name = dbname["sensorstate"]
-    ct = datetime.datetime.now()
     payload = msg.payload.decode("utf-8")
     topic = msg.topic
-    print(topic+" "+payload," time stamp " , ct)
-    item_1 = {
-        "timestamp" : ct,
-        "payload" : payload,
-    }
-    collection_name.insert_one(item_1)
+    print(topic+" "+payload," time stamp ")
+
+    try:
+        data = json.loads(payload)  # Parse the JSON payload
+        item = {
+            "timestamp": data.get("timestamp"),# Access specific fields from the JSON data
+            "status": data.get("status"),  
+            "placementx": data.get("placementx"),
+            "placementy": data.get("placementy"),
+            "location": data.get("location")
+        }
+        collection_name.insert_one(item)
+    except json.JSONDecodeError as e:
+        print("Failed to parse JSON:", e)
 
 
 
@@ -43,5 +48,5 @@ client2.on_connect =on_connect
 client2.username_pw_set('user1',password='1234')
 client2.connect(broker,port)
 client2.on_message = on_message
-client2.subscribe("testtopic")
+client2.subscribe("Sensors/+/Robots")
 client2.loop_forever()
