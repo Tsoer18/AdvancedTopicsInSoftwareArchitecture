@@ -25,7 +25,7 @@ def on_message(client, userdata, msg):
     collection_name = dbname["sensorstate"]
     payload = msg.payload.decode("utf-8")
     topic = msg.topic
-    print(topic+" "+payload," time stamp ")
+    #print(topic+" "+payload," time stamp ")
 
     try:
         data = json.loads(payload)  # Parse the JSON payload

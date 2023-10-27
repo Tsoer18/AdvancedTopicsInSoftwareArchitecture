@@ -8,6 +8,10 @@ services:
     build: ./PYSubscribe/
     depends_on:
       - mqtt5
+  pymonitor:
+    build: ./PYMonitor/
+    depends_on:
+      - mqtt5
   mqtt5:
     image: eclipse-mosquitto
     container_name: mqtt5
