@@ -16,7 +16,7 @@ dbname = get_database()
 
 
 
-broker = 'mqtt5'
+broker = 'mqtt5Mongodb'
 port = 1883
 
 
@@ -34,6 +34,7 @@ def on_message(client, userdata, msg):
             "status": data.get("status"),  
             "placementx": data.get("placementx"),
             "placementy": data.get("placementy"),
+            "placementz": data.get("placementz"),
             "location": data.get("location")
         }
         collection_name.insert_one(item)
