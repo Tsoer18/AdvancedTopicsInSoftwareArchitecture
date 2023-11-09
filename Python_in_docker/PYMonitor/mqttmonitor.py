@@ -2,56 +2,53 @@ import paho.mqtt.client as mqtt
 import json
 import time
 
-def on_connect(client, userdata, flags, rc):
-    print("Connected with result code "+str(rc))
 
-    # Subscribing in on_connect() means that if we lose the connection and
-    # reconnect then subscriptions will be renewed.
 
 broker = 'mqtt5monitor'
 port = 1884
 
-
+# Variables for response time calculation
+beat_received = False
+start_time = 0
 
 # The callback for when a PUBLISH message is received from the server.
 
 def on_message(client, userdata, msg):
-    payload = msg.payload.decode("utf-8")
-    topic = msg.topic
-    print(topic+" "+payload)
+    global beat_received, start_time
+    beat_received = True
+    end_time = time.time()
+    response_time = end_time - start_time
+    print(start_time)
+    print(end_time)
+    print(f"Received heartbeat response in {response_time} seconds")
 
-    try:
-        data = json.loads(payload)  # Parse the JSON payload
-        status = data.get("status")
-        if(status == "OFF"):
-            data = {
-                "location": data.get("location"),
-                "timestamp": data.get("timestamp")
-            }
-            payload = json.dumps(data)
-            print("Robot is off here is data: " + payload)
-            client.publish("Monitor/Sensor") #needs to be connectid to olivers website
-            
+def on_connect(client, userdata, flags, rc):
+    print("Connected with result code "+str(rc))
+    
+    # Subscribing in on_connect() means that if we lose the connection and
+    # reconnect then subscriptions will be renewed.
 
-    except json.JSONDecodeError as e:
-        print("Failed to parse JSON:", e)
-
-def Heartbeat():
+def Heartbeat(client):
     while True:
-
-        client.publish("Robots/Heartbeat/Whe", "dough")
+        global beat_received, start_time
+        beat_received = False
+        start_time = time.time()
+        client.publish("Robots/Heartbeat", "dough")
         print("dough")
+        while not beat_received:
+            if (time.time() - start_time) > 4:  # Check if 4 seconds have passed
+                print("Response not received within 4 seconds")
+                break
 
-        time.sleep(2)
+        time.sleep(2)  # Send heartbeat every second
 
 
 client = mqtt.Client()
 client.on_connect = on_connect
+client.on_message = on_message
 client.username_pw_set('user1', password= '1234')
 client.connect(broker, port)
-client.on_message = on_message
-client.subscribe("Sensors/+/Robots")
+client.subscribe("HeartBeat/Robots")
+client.loop_start()
 
-client.loop_start
-
-Heartbeat()
+Heartbeat(client)
