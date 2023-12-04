@@ -5,6 +5,6 @@ RUN pip install -r requirements.txt
 
 WORKDIR /usr/app/src
 
-COPY PyRobts.py ./
+COPY PyOrderCreater.py ./
 
-CMD [ "python","-u","./PyRobts.py" ]
+CMD [ "python","-u","./PyOrderCreater.py" ]

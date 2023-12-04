@@ -5,6 +5,6 @@ RUN pip install -r requirements.txt
 
 WORKDIR /usr/app/src
 
-COPY PyRobts.py ./
+COPY heartbeatTest.py ./
 
-CMD [ "python","-u","./PyRobts.py" ]
+CMD [ "python","-u","./heartbeatTest.py" ]
