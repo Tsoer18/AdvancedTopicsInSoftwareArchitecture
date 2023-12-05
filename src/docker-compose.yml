@@ -1,26 +1,34 @@
 version: "3.7"
 services:
-
+  #TheRobots
   pyrobots:
     build: ./PYRobots/
     depends_on:
       - mqtt5Mongodb
+      - mqtt5Monitor
 
+  #RobotToMongoDb
+  pysensortomongodb:
+    build: ./PYSensorToMongoDb
+    depends_on:
+      - mqtt5Mongodb
+
+ #TheHeartbeatSystem
   pyheartbeat:
     build: ./PYMonitorSystem
     depends_on:
       - mqtt5Monitor
-
-  cppsceduler:
+  #scheduler
+  cppscheduler:
     build: ./CppScheduler/
     depends_on:
       - mqtt5Monitor
-
+ #supstetude to ruby
   pyordercreator:
     build: ./PyOrderCreator
     depends_on:
       - mqtt5Monitor
-
+  #Test
   pytest:
     build: ./PyHeartbeatTest
     depends_on:
