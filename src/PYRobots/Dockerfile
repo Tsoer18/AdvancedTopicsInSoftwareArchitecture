@@ -5,6 +5,6 @@ RUN pip install -r requirements.txt
 
 WORKDIR /usr/app/src
 
-COPY mqttconnector.py ./
+COPY PyRobts.py ./
 
-CMD [ "python","-u","./mqttconnector.py" ]
+CMD [ "python","-u","./PyRobts.py" ]

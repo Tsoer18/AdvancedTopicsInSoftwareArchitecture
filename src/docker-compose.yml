@@ -1,17 +1,40 @@
 version: "3.7"
 services:
-  pypublish:
-    build: ./PYPublish/
+  #TheRobots
+  pyrobots:
+    build: ./PYRobots/
     depends_on:
       - mqtt5Mongodb
-  pysubscribe:
-    build: ./PYSubscribe/
+      - mqtt5Monitor
+
+  #RobotToMongoDb
+  pysensortomongodb:
+    build: ./PYSensorToMongoDb
     depends_on:
       - mqtt5Mongodb
-  pymonitor:
-    build: ./PYMonitor/
+
+ #TheHeartbeatSystem
+  pyheartbeat:
+    build: ./PYMonitorSystem
     depends_on:
-      - mqtt5Mongodb
+      - mqtt5Monitor
+  #scheduler
+  cppscheduler:
+    build: ./CppScheduler/
+    depends_on:
+      - mqtt5Monitor
+ #supstetude to ruby
+  pyordercreator:
+    build: ./PyOrderCreator
+    depends_on:
+      - mqtt5Monitor
+  #Test
+  pytest:
+    build: ./PyHeartbeatTest
+    depends_on:
+      - mqtt5Monitor
+
+
   mqtt5Mongodb:
     image: eclipse-mosquitto
     container_name: mqtt5Mongodb
@@ -32,7 +55,7 @@ services:
     volumes:
       - ./MqttMonitor/config:/mosquitto/config:rw
       - ./MqttMonitor/data:/mosquitto/data:rw
-      - ./MqttMonitor/log:/mosquitto/log:rw    
+      - ./MqttMonitor/log:/mosquitto/log:rw
 
 # volumes for mapping data,config and log
 volumes:

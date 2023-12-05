@@ -8,19 +8,23 @@ broker = 'mqtt5monitor'
 port = 1884
 
 # Variables for response time calculation
-beat_received = False
+ErrorMessageReceived = False
 start_time = 0
 
 # The callback for when a PUBLISH message is received from the server.
 
 def on_message(client, userdata, msg):
-    global beat_received, start_time
-    beat_received = True
+    global ErrorMessageReceived, start_time
+    ErrorMessageReceived = True
     end_time = time.time()
     response_time = end_time - start_time
-    print(start_time)
-    print(end_time)
-    print(f"Received heartbeat response in {response_time} seconds")
+    #print(start_time)
+    #print(end_time)
+    print(f"Received Error response in {response_time} seconds")
+    client.publish("Robots/test", "EndTest")
+    print("End Test")
+    client.disconnect() # disconnect gracefully
+    client.loop_stop()
 
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code "+str(rc))
@@ -29,18 +33,14 @@ def on_connect(client, userdata, flags, rc):
     # reconnect then subscriptions will be renewed.
 
 def Heartbeat(client):
-    while True:
-        global beat_received, start_time
-        beat_received = False
+    while(True):
+        time.sleep(30)
+        global ErrorMessageReceived, start_time
+        ErrorMessageReceived = False
         start_time = time.time()
-        client.publish("Robots/Heartbeat", "dough")
-        print("dough")
-        while not beat_received:
-            if (time.time() - start_time) > 4:  # Check if 4 seconds have passed
-                print("Response not received within 4 seconds")
-                break
-
-        time.sleep(2)  # Send heartbeat every second
+        client.publish("Robots/test", "StartTest")
+        print("Start  Test")
+        
 
 
 client = mqtt.Client()
@@ -48,7 +48,7 @@ client.on_connect = on_connect
 client.on_message = on_message
 client.username_pw_set('user1', password= '1234')
 client.connect(broker, port)
-client.subscribe("HeartBeat/Robots")
+client.subscribe("Robots/Error/NoHeartBeat/Test")
 client.loop_start()
 
 Heartbeat(client)
