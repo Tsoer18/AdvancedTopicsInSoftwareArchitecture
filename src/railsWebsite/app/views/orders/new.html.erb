@@ -1,0 +1,32 @@
+<h1> Create new order</h1>
+
+<%= form_for :order, url: orders_path do |f| %>
+  <p>
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :wheel %><br>
+    <%= f.select :wheel, options_for_select(Order.wheels.map {|k,v| [k.humanize,k]})%>
+  </p>
+  <p>
+    <%= f.label :engine %><br>
+    <%= f.select :engine, options_for_select(Order.engines.map {|k,v| [k.humanize,k]})%>
+  </p>
+  <p>
+    <%= f.label :gun %><br>
+    <%= f.select :gun, options_for_select(Order.guns.map {|k,v| [k.humanize,k]})%>
+  </p>
+  <p>
+    <%= f.label :welding %><br>
+    <%= f.select :welding, options_for_select(Order.weldings.map {|k,v| [k.humanize,k]})%>
+  </p>
+  <p>
+    <%= f.label :ammo %><br>
+    <%= f.select :ammo, options_for_select(Order.ammos.map {|k,v| [k.humanize,k]})%>
+  </p>
+
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>

@@ -1,0 +1,19 @@
+<h1> Here is a list of your orders</h1>
+<ul>
+<%@orders.each do |order| %>
+  <li>Name of order: <%=order.name %><br>
+    Wheel type:<%=order.wheel %> <br>
+    Engine type:<%=order.engine %> <br>
+    Gun type:<%=order.gun %> <br>
+    Welding type:<%=order.welding %> <br>
+    Ammo type:<%=order.ammo %> <br>
+    Finished?: <%=order.isDone %> <br>
+    IsOrderDeliveredToScheduler?: <%=order.orderDeliveredToScheduler %>
+
+
+
+  </li>
+<%end %>
+</ul>
+<br>
+<%=link_to "Add new order" , new_order_path  %>
