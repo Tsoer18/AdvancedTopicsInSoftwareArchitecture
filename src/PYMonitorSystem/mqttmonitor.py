@@ -6,6 +6,7 @@ import time
 
 broker = 'mqtt5monitor'
 port = 1884
+clientID = "HeartBeat"
 
 # Variables for response time calculation
 beat_received = False
@@ -47,7 +48,7 @@ def Heartbeat(client):
         time.sleep(2)
 
 
-client = mqtt.Client()
+client = mqtt.Client(client_id=clientID)
 client.on_connect = on_connect
 client.on_message = on_message
 client.username_pw_set('user1', password= '1234')

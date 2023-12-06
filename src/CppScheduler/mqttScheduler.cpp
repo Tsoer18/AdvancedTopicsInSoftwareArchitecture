@@ -31,10 +31,12 @@ const std::string TOPICSCHEDULE("Schedule/");
 const std::string TOPICROBOTORDER("Robots/Order");
 const std::string TOPICM("Hello");
 const std::string TOPICERRORTEST("Robots/Error/NoHeartBeat/Test");
+const std::string TOPICWEBSITE("Website/");
 
 // Order list
 std::vector<json> orderList;
 std::vector<json> CheckList;
+int Currentorder;
 
 class action_listener : public virtual mqtt::iaction_listener
 {
@@ -171,6 +173,10 @@ class callback : public virtual mqtt::callback,
         {
             wheelFunction = "30z,10x,30y";
         }
+        else
+        {
+            wheelFunction = "30z,10x,30y";
+        }
         std::string engine = order["Engine"];
         std::string engineFunction;
         if (engine == "V8")
@@ -182,6 +188,10 @@ class callback : public virtual mqtt::callback,
             engineFunction = "120z,20x,70y";
         }
         else if (engine == "L8")
+        {
+            engineFunction = "30z,10x,30y";
+        }
+        else
         {
             engineFunction = "30z,10x,30y";
         }
@@ -199,6 +209,10 @@ class callback : public virtual mqtt::callback,
         {
             gunFunction = "30z,10x,30y";
         }
+        else
+        {
+            gunFunction = "30z,10x,30y";
+        }
         std::string welding = order["Welding"];
         std::string weldingFunction;
         if (welding == "Welding")
@@ -210,6 +224,10 @@ class callback : public virtual mqtt::callback,
             weldingFunction = "120z,20x,70y";
         }
         else if (welding == "Bolts")
+        {
+            weldingFunction = "30z,10x,30y";
+        }
+        else
         {
             weldingFunction = "30z,10x,30y";
         }
@@ -227,9 +245,14 @@ class callback : public virtual mqtt::callback,
         {
             ammoFunction = "30z,10x,30y";
         }
+        else
+        {
+            ammoFunction = "30z,10x,30y";
+        }
+        int orderID = order["orderID"];
 
         json orderDetail;
-
+        orderDetail["orderID"] = orderID;
         orderDetail["wheelfunction"] = wheelFunction;
         orderDetail["enginefunction"] = engineFunction;
         orderDetail["gunfunction"] = gunFunction;
@@ -248,7 +271,12 @@ class callback : public virtual mqtt::callback,
         {
             // Parse JSON payload
             json orderJson = json::parse(payload);
-
+            int orderID = orderJson["orderID"];
+            std::string payloadw = "Order " + std::to_string(orderID) + " has been received";
+            std::cout << payloadw << std::endl;
+            auto msgw = mqtt::make_message(TOPICWEBSITE, payloadw);
+            msgw->set_qos(QOS);
+            cli_.publish(msgw);
             // CheckInventorySystem
             CheckInventory(orderJson);
 
@@ -283,6 +311,10 @@ class callback : public virtual mqtt::callback,
             auto msg1 = mqtt::make_message(TOPICERRORTEST, payload1);
             msg1->set_qos(QOS);
             cli_.publish(msg1);
+
+            auto msgw = mqtt::make_message(TOPICWEBSITE, payload1);
+            msgw->set_qos(QOS);
+            cli_.publish(msgw);
         }
     }
 
@@ -300,8 +332,26 @@ class callback : public virtual mqtt::callback,
             {
                 if (!orderList.empty())
                 {
+
+                    if (Currentorder != 0)
+                    {
+                        std::string payloads = "Order " + std::to_string(Currentorder) + " is Finsihed";
+                        std::cout << payloads << std::endl;
+                        auto msg = mqtt::make_message(TOPICWEBSITE, payloads);
+                        msg->set_qos(QOS);
+                        cli_.publish(msg);
+                    }
+                    else
+                    {
+                        std::string payloads = "Start up done";
+                        std::cout << payloads << std::endl;
+                        auto msg = mqtt::make_message(TOPICWEBSITE, payloads);
+                        msg->set_qos(QOS);
+                        cli_.publish(msg);
+                    }
                     json robotF = orderList.front();
                     orderList.erase(orderList.begin());
+                    Currentorder = robotF["orderID"];
                     std::string fpayload = robotF.dump();
                     auto msg = mqtt::make_message(TOPICROBOTORDER, fpayload);
                     msg->set_qos(QOS);
@@ -310,6 +360,22 @@ class callback : public virtual mqtt::callback,
                 }
                 else
                 {
+                    if (Currentorder != 0)
+                    {
+                        std::string payloads = "Order " + std::to_string(Currentorder) + " is Finsihed and orderlist is empty";
+                        std::cout << payloads << std::endl;
+                        auto msg = mqtt::make_message(TOPICWEBSITE, payloads);
+                        msg->set_qos(QOS);
+                        cli_.publish(msg);
+                    }
+                    else
+                    {
+                        std::string payloads = "Start up done and orderlist is empty";
+                        std::cout << payloads << std::endl;
+                        auto msg = mqtt::make_message(TOPICWEBSITE, payloads);
+                        msg->set_qos(QOS);
+                        cli_.publish(msg);
+                    }
                     std::cout << "orderList is empty" << std::endl;
                 }
             }
