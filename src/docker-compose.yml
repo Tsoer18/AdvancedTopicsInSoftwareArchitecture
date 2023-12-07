@@ -8,10 +8,16 @@ services:
       - mqtt5Monitor
 
   #RobotToMongoDb
- 
+  pysensortomongodb:
+    build: ./PYSensorToMongoDb
+    depends_on:
+      - mqtt5Mongodb
 
  #TheHeartbeatSystem
-  
+  pyheartbeat:
+    build: ./PYMonitorSystem
+    depends_on:
+      - mqtt5Monitor
   #scheduler
   cppscheduler:
     build: ./CppScheduler/
@@ -24,7 +30,10 @@ services:
       - mqtt5Monitor
       - db
   #Test
- 
+  pytest:
+    build: ./PyHeartbeatTest
+    depends_on:
+      - mqtt5Monitor
   db:
     image: postgres
     environment:
