@@ -5,11 +5,10 @@ class OrdersController < ApplicationController
   def create
 
     @order = Order.new(order_params)
-    @order.isDone = false
-    @order.orderDeliveredToScheduler = false
+    @order.isdone = false
+    @order.orderdeliveredtoscheduler = false
     if @order.save
       redirect_to root_path, notice: "Lavede odre succesfuldt"
-      @client.publish("/Robots/Heartbeat", "Hejsa")
     else
       render new, status: :unprocessable_entity
     end

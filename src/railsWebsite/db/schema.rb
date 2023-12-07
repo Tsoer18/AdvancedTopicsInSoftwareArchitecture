@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_06_125531) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_07_104531) do
   create_table "orders", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -20,7 +20,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_06_125531) do
     t.integer "gun"
     t.integer "welding"
     t.integer "ammo"
-    t.boolean "isDone"
+    t.boolean "isdone"
     t.boolean "orderDeliveredToScheduler"
   end
 

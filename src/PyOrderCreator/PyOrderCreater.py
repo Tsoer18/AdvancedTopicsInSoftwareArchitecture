@@ -2,10 +2,27 @@ import paho.mqtt.client as mqtt
 import json
 import time
 import random
+import psycopg2
 
 
 broker = 'mqtt5monitor'
 port = 1884
+
+def get_connection():
+    try:
+        return psycopg2.connect(
+            database="postgres",
+            user="postgres",
+            password="postgres",
+            host="db",
+            port=5432,
+        )
+    except:
+        return False
+
+
+
+
 
 
 
@@ -20,24 +37,48 @@ def on_connect(client, userdata, flags, rc):
 
 def OrderCreate(client):
     while True:
-        data = {
-            "orderID": random.randint(1000, 9999),
-            "Wheel": random.choice(["Wheel", "Track", "BoatPart"]),
-            "Engine": random.choice(["V8", "Truckv12", "L8"]),
-            "Gun": random.choice(["80mm", "90mm", "2x60mm"]),
-            "Welding": random.choice(["Welding", "Rivets", "Bolts"]),
-            "Ammo": random.choice(["ArmorPerice", "Trace", "Exploding"])
-        }
-        payload = json.dumps(data)
-        client.publish("Scheduler/order/newOrder",payload)
+        conn = get_connection()
+        curr = conn.cursor()
+        curr.execute("SELECT * FROM orders WHERE isdone = 'f' AND orderdeliveredtoscheduler = 'f'")
+        data1 = curr.fetchone()
+        if (data1 != None):
+            data = {
+                "orderID": data1[0],
+                "Wheel": data1[4],
+                "Engine": data1[5],
+                "Gun": data1[6],
+                "Welding": data1[7],
+                "Ammo": data1[8]
+            }
+            payload = json.dumps(data)
+            client.publish("Scheduler/order/newOrder",payload)
+        conn.close()
+            
+
         time.sleep(10)  # Send order every 8 secounds
+
+def setorderdeliveredtoschedulertotrue(orderid):
+    print("Trying to update order status in db:")
+    conn = get_connection()
+    curr1 = conn.cursor()
+    curr1.execute("UPDATE orders SET orderdeliveredtoscheduler = 't' WHERE id = '%s'",(orderid,))
+    conn.commit()
+    conn.close()
+
+def noticeOrderRecieved(client,userdata,msg):
+    payload = msg.payload.decode("utf-8")
+    data = json.loads(payload)
+    setorderdeliveredtoschedulertotrue(data.get("orderid"))
+
 
 
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
 client.username_pw_set('user1', password= '1234')
+client.message_callback_add('Scheduler/order/recievedOrder', noticeOrderRecieved )
 client.connect(broker, port)
+client.subscribe("Scheduler/#")
 client.loop_start()
 
 OrderCreate(client)

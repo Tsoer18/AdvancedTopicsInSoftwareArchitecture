@@ -32,6 +32,7 @@ const std::string TOPICROBOTORDER("Robots/Order");
 const std::string TOPICM("Hello");
 const std::string TOPICERRORTEST("Robots/Error/NoHeartBeat/Test");
 const std::string TOPICWEBSITE("Website/");
+const std::string TOPICRECIEVEDORDER("Scheduler/order/recievedOrder");
 
 // Order list
 std::vector<json> orderList;
@@ -161,15 +162,15 @@ class callback : public virtual mqtt::callback,
 
         std::string wheel = order["Wheel"];
         std::string wheelFunction;
-        if (wheel == "Wheel")
+        if (wheel == "0")
         {
             wheelFunction = "180z,120x,90y";
         }
-        else if (wheel == "Track")
+        else if (wheel == "1")
         {
             wheelFunction = "120z,20x,70y";
         }
-        else if (wheel == "BoatPart")
+        else if (wheel == "2")
         {
             wheelFunction = "30z,10x,30y";
         }
@@ -179,15 +180,15 @@ class callback : public virtual mqtt::callback,
         }
         std::string engine = order["Engine"];
         std::string engineFunction;
-        if (engine == "V8")
+        if (engine == "1")
         {
             engineFunction = "180z,120x,90y";
         }
-        else if (engine == "Truckv12")
+        else if (engine == "2")
         {
             engineFunction = "120z,20x,70y";
         }
-        else if (engine == "L8")
+        else if (engine == "3")
         {
             engineFunction = "30z,10x,30y";
         }
@@ -197,15 +198,15 @@ class callback : public virtual mqtt::callback,
         }
         std::string gun = order["Gun"];
         std::string gunFunction;
-        if (gun == "80mm")
+        if (gun == "1")
         {
             gunFunction = "180z,120x,90y";
         }
-        else if (gun == "90mm")
+        else if (gun == "2")
         {
             gunFunction = "120z,20x,70y";
         }
-        else if (gun == "2x60mm")
+        else if (gun == "3")
         {
             gunFunction = "30z,10x,30y";
         }
@@ -215,15 +216,15 @@ class callback : public virtual mqtt::callback,
         }
         std::string welding = order["Welding"];
         std::string weldingFunction;
-        if (welding == "Welding")
+        if (welding == "1")
         {
             weldingFunction = "180z,120x,90y";
         }
-        else if (welding == "Rivets")
+        else if (welding == "2")
         {
             weldingFunction = "120z,20x,70y";
         }
-        else if (welding == "Bolts")
+        else if (welding == "3")
         {
             weldingFunction = "30z,10x,30y";
         }
@@ -233,15 +234,15 @@ class callback : public virtual mqtt::callback,
         }
         std::string ammo = order["Ammo"];
         std::string ammoFunction;
-        if (ammo == "ArmorPerice")
+        if (ammo == "1")
         {
             ammoFunction = "180z,120x,90y";
         }
-        else if (ammo == "Trace")
+        else if (ammo == "2")
         {
             ammoFunction = "120z,20x,70y";
         }
-        else if (ammo == "Exploding")
+        else if (ammo == "3")
         {
             ammoFunction = "30z,10x,30y";
         }
@@ -262,7 +263,8 @@ class callback : public virtual mqtt::callback,
         return orderDetail;
     }
 
-    void orderHandling(mqtt::const_message_ptr msg)
+    
+ void orderHandling(mqtt::const_message_ptr msg)
     {
         std::string payload = msg->to_string();
         std::cout << "Order message received: " << payload << std::endl;
@@ -272,9 +274,13 @@ class callback : public virtual mqtt::callback,
             // Parse JSON payload
             json orderJson = json::parse(payload);
             int orderID = orderJson["orderID"];
-            std::string payloadw = "Order " + std::to_string(orderID) + " has been received";
+            json jspayload;
+            jspayload["Message"] = "Order " + std::to_string(orderID) + " has been received";
+            jspayload["orderid"] = orderID;
+            std::string payloadw = jspayload.dump();
+
             std::cout << payloadw << std::endl;
-            auto msgw = mqtt::make_message(TOPICWEBSITE, payloadw);
+            auto msgw = mqtt::make_message(TOPICRECIEVEDORDER, payloadw);
             msgw->set_qos(QOS);
             cli_.publish(msgw);
             // CheckInventorySystem
