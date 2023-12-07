@@ -7,33 +7,17 @@ services:
       - mqtt5Mongodb
       - mqtt5Monitor
 
-  #RobotToMongoDb
-  pysensortomongodb:
-    build: ./PYSensorToMongoDb
-    depends_on:
-      - mqtt5Mongodb
-
- #TheHeartbeatSystem
-  pyheartbeat:
-    build: ./PYMonitorSystem
-    depends_on:
-      - mqtt5Monitor
   #scheduler
   cppscheduler:
     build: ./CppScheduler/
     depends_on:
       - mqtt5Monitor
- #supstetude to ruby
+  #supstetude to ruby
   pyordercreator:
     build: ./PyOrderCreator
     depends_on:
       - mqtt5Monitor
       - db
-  #Test
-  pytest:
-    build: ./PyHeartbeatTest
-    depends_on:
-      - mqtt5Monitor
   db:
     image: postgres
     environment:
@@ -45,17 +29,6 @@ services:
     restart: always
     ports:
       - 8080:8080
-  website:
-    build: ./railsWebsite
-    command: "bundle exec rails s -p 3000 -b '0.0.0.0'"
-    environment:
-      - SECRET_KEY_BASE=ba0fa41f86be249074a54f30050529b80f224f4a8894619f847e3c4560f47a16d7b67d320923b25aa634dcb72abc1fc1c47975e8fb829b0a252a7f5fa428b8ee
-    depends_on:
-      - db
-    ports:
-    - 3000:3000
-    
-
 
   mqtt5Mongodb:
     image: eclipse-mosquitto

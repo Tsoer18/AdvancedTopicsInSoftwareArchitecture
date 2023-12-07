@@ -33,6 +33,7 @@ const std::string TOPICM("Hello");
 const std::string TOPICERRORTEST("Robots/Error/NoHeartBeat/Test");
 const std::string TOPICWEBSITE("Website/");
 const std::string TOPICRECIEVEDORDER("Scheduler/order/recievedOrder");
+const std::string TOPICORDERDONE("scheduler/order/done");
 
 // Order list
 std::vector<json> orderList;
@@ -263,8 +264,7 @@ class callback : public virtual mqtt::callback,
         return orderDetail;
     }
 
-    
- void orderHandling(mqtt::const_message_ptr msg)
+    void orderHandling(mqtt::const_message_ptr msg)
     {
         std::string payload = msg->to_string();
         std::cout << "Order message received: " << payload << std::endl;
@@ -291,11 +291,6 @@ class callback : public virtual mqtt::callback,
 
             // inputRobot Function order to schedule
             orderList.push_back(orderConfiguration);
-
-            std::string payload = "Order added to schedule";
-            auto msg = mqtt::make_message(TOPICSCHEDULE, payload);
-            msg->set_qos(QOS);
-            cli_.publish(msg);
             std::cout << "Schedule msg sent " << std::endl;
         }
         catch (const std::exception &e)
@@ -341,17 +336,23 @@ class callback : public virtual mqtt::callback,
 
                     if (Currentorder != 0)
                     {
-                        std::string payloads = "Order " + std::to_string(Currentorder) + " is Finsihed";
+                        json jspayload;
+                        jspayload["Message"] = "Order " + std::to_string(Currentorder) + " is Finsihed";
+                        jspayload["orderid"] = Currentorder;
+                        std::string payloads = jspayload.dump();
                         std::cout << payloads << std::endl;
-                        auto msg = mqtt::make_message(TOPICWEBSITE, payloads);
+                        auto msg = mqtt::make_message(TOPICORDERDONE, payloads);
                         msg->set_qos(QOS);
                         cli_.publish(msg);
                     }
                     else
                     {
-                        std::string payloads = "Start up done";
+                        json jspayload;
+                        jspayload["Message"] = "Start up done";
+                        jspayload["orderid"] = 0000;
+                        std::string payloads = jspayload.dump();
                         std::cout << payloads << std::endl;
-                        auto msg = mqtt::make_message(TOPICWEBSITE, payloads);
+                        auto msg = mqtt::make_message(TOPICORDERDONE, payloads);
                         msg->set_qos(QOS);
                         cli_.publish(msg);
                     }
@@ -368,17 +369,24 @@ class callback : public virtual mqtt::callback,
                 {
                     if (Currentorder != 0)
                     {
-                        std::string payloads = "Order " + std::to_string(Currentorder) + " is Finsihed and orderlist is empty";
+                        json jspayload;
+                        jspayload["Message"] = "Order " + std::to_string(Currentorder) + " is Finsihed and orderlist is empty";
+                        jspayload["orderid"] = Currentorder;
+                        std::string payloads = jspayload.dump();
                         std::cout << payloads << std::endl;
-                        auto msg = mqtt::make_message(TOPICWEBSITE, payloads);
+                        auto msg = mqtt::make_message(TOPICORDERDONE, payloads);
                         msg->set_qos(QOS);
                         cli_.publish(msg);
+                        Currentorder = 0;
                     }
                     else
                     {
-                        std::string payloads = "Start up done and orderlist is empty";
+                        json jspayload;
+                        jspayload["Message"] = "Start up done/or no current and orderlist is empty";
+                        jspayload["orderid"] = 0000;
+                        std::string payloads = jspayload.dump();
                         std::cout << payloads << std::endl;
-                        auto msg = mqtt::make_message(TOPICWEBSITE, payloads);
+                        auto msg = mqtt::make_message(TOPICORDERDONE, payloads);
                         msg->set_qos(QOS);
                         cli_.publish(msg);
                     }

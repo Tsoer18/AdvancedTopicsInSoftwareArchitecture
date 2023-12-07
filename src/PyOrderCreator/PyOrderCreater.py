@@ -21,11 +21,6 @@ def get_connection():
         return False
 
 
-
-
-
-
-
 def on_message(client, userdata, msg):
     print(msg)
 
@@ -68,7 +63,24 @@ def setorderdeliveredtoschedulertotrue(orderid):
 def noticeOrderRecieved(client,userdata,msg):
     payload = msg.payload.decode("utf-8")
     data = json.loads(payload)
+    print(data.get("Message"))
     setorderdeliveredtoschedulertotrue(data.get("orderid"))
+
+
+def setorderisdontotrue(orderid):
+    print("Trying to update order in db in isdone")
+    conn = get_connection()
+    curr1 = conn.cursor()
+    curr1.execute("UPDATE orders SET isdone = 't' WHERE id = '%s'",(orderid,))
+    conn.commit()
+    conn.close()
+
+def OrderisDone(client,userdata,msg):
+    payload = msg.payload.decode("utf-8")
+    data = json.loads(payload)
+    print(data.get("Message"))
+    setorderisdontotrue(data.get("orderid"))
+
 
 
 
@@ -76,7 +88,8 @@ client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
 client.username_pw_set('user1', password= '1234')
-client.message_callback_add('Scheduler/order/recievedOrder', noticeOrderRecieved )
+client.message_callback_add('Scheduler/order/recievedOrder', noticeOrderRecieved)
+client.message_callback_add("scheduler/order/done", OrderisDone)
 client.connect(broker, port)
 client.subscribe("Scheduler/#")
 client.loop_start()
