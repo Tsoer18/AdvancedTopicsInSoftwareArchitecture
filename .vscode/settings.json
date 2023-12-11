@@ -79,7 +79,7 @@
   "editor.formatOnSave": true,
   "[latex]": {
     "editor.codeActionsOnSave": {
-      "source.fixAll": true
+      "source.fixAll": "explicit"
     }
   },
   "triggerTaskOnSave.tasks": {

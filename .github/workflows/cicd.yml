@@ -13,10 +13,15 @@ on:
 
   # Environment Variables
 env:
-  PACKAGE_REGISTRY_TO_USE: nico8034
-  DOCKER_IMAGE_NAME: lowercase-image-name
-  PROJECT_NAME: ProjectName
-  GROUP_NUMBER: GroupNumber #I.e  Group02
+  PACKAGE_REGISTRY_TO_USE: Anton4d
+  DOCKER_IMAGE_PYMONITOR: pymonitor
+  DOCKER_IMAGE_CPPSCHEDULER: cppscheduler
+  DOCKER_IMAGE_PYROBOTS: pyrobots
+  DOCKER_IMAGE_PYSENSORTODB: pysensortodb
+  DOCKER_IMAGE_RAILSW: railsw
+  DOCKER_IMAGE_PYORDERCREATOR: pyordercreator
+  PROJECT_NAME: TankProduction
+  GROUP_NUMBER: Group03 #I.e  Group02
 
 jobs:
   # Create artifact of repository source code to use for consistensy accross all jobs
@@ -92,7 +97,7 @@ jobs:
       - name: Test application
         run: echo "test"
 
-  build-push-docker-image:
+  build-pyrobot-docker-image:
     runs-on: ubuntu-latest
     needs: [test-application]
     permissions:
@@ -118,14 +123,14 @@ jobs:
       - name: Build & Push image
         uses: docker/build-push-action@v3
         with:
-          context: . #Path to your dockerfile
+          context: ./src/PYRobots
           push: true
-          tags: ghcr.io/${{ env.OWNER_LOWER }}/${{ env.DOCKER_IMAGE_NAME }}:1.0-${{ github.sha }},ghcr.io/${{ env.OWNER_LOWER }}/${{ env.DOCKER_IMAGE_NAME }}:latest
+          tags: ghcr.io/${{ env.OWNER_LOWER }}/${{ env.DOCKER_IMAGE_PYROBOTS }}:1.0-${{ github.sha }},ghcr.io/${{ env.OWNER_LOWER }}/${{ env.DOCKER_IMAGE_PYROBOTS }}:latest
 
   # Job for deploying the application, could be the logic for deploying to your VM  
   deploy-application:
     runs-on: ubuntu-latest
-    needs: [build-push-docker-image]
+    needs: [build-pyrobot-docker-image]
     continue-on-error: true
     steps:
       - name: Logic for deploying application
