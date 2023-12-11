@@ -33,7 +33,7 @@ const std::string TOPICM("Hello");
 const std::string TOPICERRORTEST("Robots/Error/NoHeartBeat/Test");
 const std::string TOPICWEBSITE("Website/");
 const std::string TOPICRECIEVEDORDER("Scheduler/order/recievedOrder");
-const std::string TOPICORDERDONE("scheduler/order/done");
+const std::string TOPICORDERDONE("Scheduler/order/done");
 
 // Order list
 std::vector<json> orderList;

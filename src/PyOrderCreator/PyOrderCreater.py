@@ -89,7 +89,7 @@ client.on_connect = on_connect
 client.on_message = on_message
 client.username_pw_set('user1', password= '1234')
 client.message_callback_add('Scheduler/order/recievedOrder', noticeOrderRecieved)
-client.message_callback_add("scheduler/order/done", OrderisDone)
+client.message_callback_add("Scheduler/order/done", OrderisDone)
 client.connect(broker, port)
 client.subscribe("Scheduler/#")
 client.loop_start()
