@@ -126,11 +126,166 @@ jobs:
           context: ./src/PYRobots
           push: true
           tags: ghcr.io/${{ env.OWNER_LOWER }}/${{ env.DOCKER_IMAGE_PYROBOTS }}:1.0-${{ github.sha }},ghcr.io/${{ env.OWNER_LOWER }}/${{ env.DOCKER_IMAGE_PYROBOTS }}:latest
+  
+  build-pymonitor-docker-image:
+    runs-on: ubuntu-latest
+    needs: [test-application]
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Download repository artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: repository-artifacts
+          path: .
+      - name: Login to GitHub Package Registry
+        uses: docker/login-action@v2
+        with:
+          # Authenticate with GitHub Container Registry, could be changed to use DockerHub
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      # Transform github.actor to lowercase
+      - name: Transform username to lowercase
+        run: echo "OWNER_LOWER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+      # Building and pushing application image go to: GitHub -> Profile -> Packages 
+      - name: Build & Push image
+        uses: docker/build-push-action@v3
+        with:
+          context: ./src/PYMonitorSystem
+          push: true
+          tags: ghcr.io/${{ env.OWNER_LOWER }}/${{ env.DOCKER_IMAGE_PYMONITOR }}:1.0-${{ github.sha }},ghcr.io/${{ env.OWNER_LOWER }}/${{ env.DOCKER_IMAGE_PYMONITOR }}:latest
+
+  build-cppscheduler-docker-image:
+    runs-on: ubuntu-latest
+    needs: [test-application]
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Download repository artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: repository-artifacts
+          path: .
+      - name: Login to GitHub Package Registry
+        uses: docker/login-action@v2
+        with:
+          # Authenticate with GitHub Container Registry, could be changed to use DockerHub
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      # Transform github.actor to lowercase
+      - name: Transform username to lowercase
+        run: echo "OWNER_LOWER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+      # Building and pushing application image go to: GitHub -> Profile -> Packages 
+      - name: Build & Push image
+        uses: docker/build-push-action@v3
+        with:
+          context: ./src/CppScheduler
+          push: true
+          tags: ghcr.io/${{ env.OWNER_LOWER }}/${{ env.DOCKER_IMAGE_CPPSCHEDULER }}:1.0-${{ github.sha }},ghcr.io/${{ env.OWNER_LOWER }}/${{ env.DOCKER_IMAGE_CPPSCHEDULER }}:latest
+
+  build-pysensortodb-docker-image:
+    runs-on: ubuntu-latest
+    needs: [test-application]
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Download repository artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: repository-artifacts
+          path: .
+      - name: Login to GitHub Package Registry
+        uses: docker/login-action@v2
+        with:
+          # Authenticate with GitHub Container Registry, could be changed to use DockerHub
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      # Transform github.actor to lowercase
+      - name: Transform username to lowercase
+        run: echo "OWNER_LOWER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+      # Building and pushing application image go to: GitHub -> Profile -> Packages 
+      - name: Build & Push image
+        uses: docker/build-push-action@v3
+        with:
+          context: ./src/PYSensorToMongoDb
+          push: true
+          tags: ghcr.io/${{ env.OWNER_LOWER }}/${{ env.DOCKER_IMAGE_PYSENSORTODB }}:1.0-${{ github.sha }},ghcr.io/${{ env.OWNER_LOWER }}/${{ env.DOCKER_IMAGE_PYSENSORTODB }}:lat
+
+  build-railsw-docker-image:
+    runs-on: ubuntu-latest
+    needs: [test-application]
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Download repository artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: repository-artifacts
+          path: .
+      - name: Login to GitHub Package Registry
+        uses: docker/login-action@v2
+        with:
+          # Authenticate with GitHub Container Registry, could be changed to use DockerHub
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      # Transform github.actor to lowercase
+      - name: Transform username to lowercase
+        run: echo "OWNER_LOWER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+      # Building and pushing application image go to: GitHub -> Profile -> Packages 
+      - name: Build & Push image
+        uses: docker/build-push-action@v3
+        with:
+          context: ./src/railsWebsite
+          push: true
+          tags: ghcr.io/${{ env.OWNER_LOWER }}/${{ env.DOCKER_IMAGE_RAILSW }}:1.0-${{ github.sha }},ghcr.io/${{ env.OWNER_LOWER }}/${{ env.DOCKER_IMAGE_RAILSW }}:lat
+
+  build-pyordercreator-docker-image:
+    runs-on: ubuntu-latest
+    needs: [test-application]
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Download repository artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: repository-artifacts
+          path: .
+      - name: Login to GitHub Package Registry
+        uses: docker/login-action@v2
+        with:
+          # Authenticate with GitHub Container Registry, could be changed to use DockerHub
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      # Transform github.actor to lowercase
+      - name: Transform username to lowercase
+        run: echo "OWNER_LOWER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+      # Building and pushing application image go to: GitHub -> Profile -> Packages 
+      - name: Build & Push image
+        uses: docker/build-push-action@v3
+        with:
+          context: ./src/PyOrderCreator
+          push: true
+          tags: ghcr.io/${{ env.OWNER_LOWER }}/${{ env.DOCKER_IMAGE_PYORDERCREATOR }}:1.0-${{ github.sha }},ghcr.io/${{ env.OWNER_LOWER }}/${{ env.DOCKER_IMAGE_PYORDERCREATOR }}:lat
+                
+
+
+
+
 
   # Job for deploying the application, could be the logic for deploying to your VM  
   deploy-application:
     runs-on: ubuntu-latest
-    needs: [build-pyrobot-docker-image]
+    needs: [build-pyrobot-docker-image, build-pymonitor-docker-image, build-cppscheduler-docker-image, build-pysensortodb-docker-image, build-railsw-docker-image, build-pyordercreator-docker-image]
     continue-on-error: true
     steps:
       - name: Logic for deploying application
