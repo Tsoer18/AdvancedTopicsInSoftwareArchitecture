@@ -284,7 +284,7 @@ jobs:
 
   # Job for deploying the application, could be the logic for deploying to your VM  
   deploy-application:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [build-pyrobot-docker-image, build-pymonitor-docker-image, build-cppscheduler-docker-image, build-pysensortodb-docker-image, build-pyordercreator-docker-image]
     continue-on-error: true
     steps:
