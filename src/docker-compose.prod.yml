@@ -1,0 +1,75 @@
+version: "3.7"
+services:
+  #TheRobots
+  pyrobots:
+    image: ghcr.io/anton4d/pyrobots:latest
+    depends_on:
+      - mqtt5Mongodb
+      - mqtt5Monitor
+
+  #RobotToMongoDb
+  pysensortomongodb:
+    image: ghcr.io/anton4d/pysensortodb:lat
+    depends_on:
+      - mqtt5Mongodb
+
+  #TheHeartbeatSystem
+  pyheartbeat:
+    image: ghcr.io/anton4d/pymonitor:latest
+    depends_on:
+      - mqtt5Monitor
+  #scheduler
+  cppscheduler:
+    image: ghcr.io/anton4d/cppscheduler:latest
+    depends_on:
+      - mqtt5Monitor
+  #supstetude to ruby
+  pyordercreator:
+    image: ghcr.io/anton4d/pyordercreator:lat
+    depends_on:
+      - mqtt5Monitor
+      - db
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+  website:
+    #image: ghcr.io/anton4d/railsw:1.0-2add06adb8c0e3371da77064dd9344930383556f
+    image: ghcr.io/anton4d/railsw:lat
+    command:
+    environment:
+      - SECRET_KEY_BASE=ba0fa41f86be249074a54f30050529b80f224f4a8894619f847e3c4560f47a16d7b67d320923b25aa634dcb72abc1fc1c47975e8fb829b0a252a7f5fa428b8ee
+    depends_on:
+      - db
+    ports:
+      - 3000:3000
+
+  mqtt5Mongodb:
+    image: eclipse-mosquitto
+    container_name: mqtt5Mongodb
+    ports:
+      - "1883:1883" #default mqtt port
+      - "9001:9001" #default mqtt port for websockets
+    volumes:
+      - ./MqttMongodb/config:/mosquitto/config:rw
+      - ./MqttMongodb/data:/mosquitto/data:rw
+      - ./MqttMongodb/log:/mosquitto/log:rw
+
+  mqtt5Monitor:
+    image: eclipse-mosquitto
+    container_name: mqtt5Monitor
+    ports:
+      - "1884:1884" #default mqtt port
+      - "9002:9002" #default mqtt port for websockets
+    volumes:
+      - ./MqttMonitor/config:/mosquitto/config:rw
+      - ./MqttMonitor/data:/mosquitto/data:rw
+      - ./MqttMonitor/log:/mosquitto/log:rw
+
+# volumes for mapping data,config and log
+volumes:
+  config:
+  data:
+  log:
