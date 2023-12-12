@@ -41,7 +41,8 @@ services:
     ports:
       - 8080:8080
   website:
-    build: ./railsWebsite #image: ghcr.io/anton4d/railsw:1.0-a03b9694215b1bf4f7ab708edb584f1afec9c06c
+    #image: ghcr.io/anton4d/railsw:1.0-b7c1cf9ea305439a2d24b87ab4b64425e85ebb5a
+    build: ./railsWebsite 
     command: "bundle exec rails s -p 3000 -b '0.0.0.0'"
     environment:
       - SECRET_KEY_BASE=ba0fa41f86be249074a54f30050529b80f224f4a8894619f847e3c4560f47a16d7b67d320923b25aa634dcb72abc1fc1c47975e8fb829b0a252a7f5fa428b8ee
