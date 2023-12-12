@@ -56,4 +56,4 @@ COPY --from=build /rails /rails
 EXPOSE 3000
 
 
-CMD ["./bin/rails", "server"]
+CMD ["rails", "server"]
