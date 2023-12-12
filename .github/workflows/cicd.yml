@@ -22,6 +22,7 @@ env:
   DOCKER_IMAGE_PYORDERCREATOR: pyordercreator
   PROJECT_NAME: TankProduction
   GROUP_NUMBER: Group03 #I.e  Group02
+  SSH_USERNAME: antonlukas25
 
 jobs:
   # Create artifact of repository source code to use for consistensy accross all jobs
@@ -38,7 +39,16 @@ jobs:
         with:
           name: repository-artifacts
           path: .
-
+      - name: Upload Docker Compose
+        uses: actions/upload-artifact@v3
+        with:
+          name: deployment-artifact
+          path: |
+            ./src/docker-compose.prod.yml
+            ./src/MqttMongodb/config/mosquitto.conf
+            ./src/MqttMongodb/config/pwfile
+            ./src/MqttMonitor/config/mosquitto.conf
+            ./src/MqttMonitor/config/pwfile
   # Perform linting and/or other static code analysis
   code-analysis:
     runs-on: ubuntu-latest
@@ -60,7 +70,6 @@ jobs:
           echo "install your-linting-dependencies"
       - name: Run Linter / Other Code Analysis tool
         run: echo "running linter"
-  
   # Job for compiling applicaitons and uploading as an artifact
   build-application:
     runs-on: ubuntu-latest
@@ -288,5 +297,17 @@ jobs:
     needs: [build-pyrobot-docker-image, build-pymonitor-docker-image, build-cppscheduler-docker-image, build-pysensortodb-docker-image, build-pyordercreator-docker-image]
     continue-on-error: true
     steps:
-      - name: Logic for deploying application
-        run: ssh -p 3022 vboxuser@localhost
+      - name: Download Deployment Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: deployment-artifact
+          path: ./src
+      - name: Setup SSH Key
+        shell: powershell
+        run: |
+          $env:SSH_PRIVATE_KEY -replace '\\n', "`n" | Out-File -FilePath private_key.pem -Encoding ascii
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Transfer docker-compose to server
+        run: |
+          scp -o StrictHostKeyChecking=no -i ./private_key.pem ./src/docker-compose.prod.yml ${{ env.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:./
