@@ -35,6 +35,7 @@ RUN bundle exec bootsnap precompile app/ lib/
 
 # Adjust binfiles to be executable on Linux
 RUN pwd
+RUN ls
 RUN chmod +x rails/bin/
 RUN sed -i "s/\r$//g" rails/bin/
 RUN sed -i 's/ruby\.exe$/ruby/' rails/bin/
