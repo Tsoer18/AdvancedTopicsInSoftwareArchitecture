@@ -41,7 +41,7 @@ services:
     ports:
       - 8080:8080
   website:
-    image: ghcr.io/anton4d/railsw:1.0-79122219322ad8eec146dc5672ba1aaa0f7198d2
+    #image: ghcr.io/anton4d/railsw:1.0-79122219322ad8eec146dc5672ba1aaa0f7198d2
     build: ./railsWebsite 
     command: "./bin/rails server"
     environment:

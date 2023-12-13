@@ -161,17 +161,17 @@ class callback : public virtual mqtt::callback,
         cli_.publish(msg);
         std::cout << "Config msg sent " << std::endl;
 
-        std::string wheel = order["Wheel"];
+        int wheel = order["Wheel"];
         std::string wheelFunction;
-        if (wheel == "0")
+        if (wheel == 0)
         {
             wheelFunction = "180z,120x,90y";
         }
-        else if (wheel == "1")
+        else if (wheel == 1)
         {
             wheelFunction = "120z,20x,70y";
         }
-        else if (wheel == "2")
+        else if (wheel == 2)
         {
             wheelFunction = "30z,10x,30y";
         }
@@ -179,17 +179,17 @@ class callback : public virtual mqtt::callback,
         {
             wheelFunction = "30z,10x,30y";
         }
-        std::string engine = order["Engine"];
+        int engine = order["Engine"];
         std::string engineFunction;
-        if (engine == "1")
+        if (engine == 0)
         {
             engineFunction = "180z,120x,90y";
         }
-        else if (engine == "2")
+        else if (engine == 1)
         {
             engineFunction = "120z,20x,70y";
         }
-        else if (engine == "3")
+        else if (engine == 2)
         {
             engineFunction = "30z,10x,30y";
         }
@@ -197,17 +197,17 @@ class callback : public virtual mqtt::callback,
         {
             engineFunction = "30z,10x,30y";
         }
-        std::string gun = order["Gun"];
+        int gun = order["Gun"];
         std::string gunFunction;
-        if (gun == "1")
+        if (gun == 0)
         {
             gunFunction = "180z,120x,90y";
         }
-        else if (gun == "2")
+        else if (gun == 1)
         {
             gunFunction = "120z,20x,70y";
         }
-        else if (gun == "3")
+        else if (gun == 2)
         {
             gunFunction = "30z,10x,30y";
         }
@@ -215,17 +215,17 @@ class callback : public virtual mqtt::callback,
         {
             gunFunction = "30z,10x,30y";
         }
-        std::string welding = order["Welding"];
+        int welding = order["Welding"];
         std::string weldingFunction;
-        if (welding == "1")
+        if (welding == 0)
         {
             weldingFunction = "180z,120x,90y";
         }
-        else if (welding == "2")
+        else if (welding == 1)
         {
             weldingFunction = "120z,20x,70y";
         }
-        else if (welding == "3")
+        else if (welding == 2)
         {
             weldingFunction = "30z,10x,30y";
         }
@@ -233,17 +233,17 @@ class callback : public virtual mqtt::callback,
         {
             weldingFunction = "30z,10x,30y";
         }
-        std::string ammo = order["Ammo"];
+        int ammo = order["Ammo"];
         std::string ammoFunction;
-        if (ammo == "1")
+        if (ammo == 0)
         {
             ammoFunction = "180z,120x,90y";
         }
-        else if (ammo == "2")
+        else if (ammo == 1)
         {
             ammoFunction = "120z,20x,70y";
         }
-        else if (ammo == "3")
+        else if (ammo == 2)
         {
             ammoFunction = "30z,10x,30y";
         }
@@ -382,7 +382,7 @@ class callback : public virtual mqtt::callback,
                     else
                     {
                         json jspayload;
-                        jspayload["Message"] = "Start up done/or no current and orderlist is empty";
+                        jspayload["Message"] = "Start up done/or no current order and orderlist is empty";
                         jspayload["orderid"] = 0000;
                         std::string payloads = jspayload.dump();
                         std::cout << payloads << std::endl;

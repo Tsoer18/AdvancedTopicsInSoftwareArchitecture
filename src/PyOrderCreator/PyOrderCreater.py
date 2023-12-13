@@ -79,7 +79,10 @@ def OrderisDone(client,userdata,msg):
     payload = msg.payload.decode("utf-8")
     data = json.loads(payload)
     print(data.get("Message"))
-    setorderisdontotrue(data.get("orderid"))
+    if not (data.get("orderid") == 0000):
+        setorderisdontotrue(data.get("orderid"))
+    else:
+        print("no order to update")
 
 
 
