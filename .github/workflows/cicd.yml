@@ -321,7 +321,7 @@ jobs:
         continue-on-error: true
       - name: Run docker compose Down on the WM 
         run: |
-          ssh -o StrictHostKeyChecking=no -i ./private_key.pem ${{ env.SSH_USERNAME}}@${{ secrets.SERVER_IP }}"docker compose -f docker-compose.prod.yml down"
+          ssh -o StrictHostKeyChecking=no -i ./private_key.pem ${{ env.SSH_USERNAME}}@${{ secrets.SERVER_IP }} "docker compose -f docker-compose.prod.yml down"
       - name: Run docker-compose --build up on WM
         run: |
           ssh -o StrictHostKeyChecking=no -i ./private_key.pem ${{ env.SSH_USERNAME}}@${{ secrets.SERVER_IP }} "docker compose -f docker-compose.prod.yml build --no-cache"
