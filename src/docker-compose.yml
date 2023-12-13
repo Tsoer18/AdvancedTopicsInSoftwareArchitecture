@@ -13,7 +13,7 @@ services:
     depends_on:
       - mqtt5Mongodb
 
- #TheHeartbeatSystem
+  #TheHeartbeatSystem
   pyheartbeat:
     build: ./PYMonitorSystem
     depends_on:
@@ -23,7 +23,7 @@ services:
     build: ./CppScheduler/
     depends_on:
       - mqtt5Monitor
- #supstetude to ruby
+  #supstetude to ruby
   pyordercreator:
     build: ./PyOrderCreator
     depends_on:
@@ -42,16 +42,24 @@ services:
       - 8080:8080
   website:
     #image: ghcr.io/anton4d/railsw:1.0-79122219322ad8eec146dc5672ba1aaa0f7198d2
-    build: ./railsWebsite 
+    build: ./railsWebsite
     command: "./bin/rails server"
     environment:
       - SECRET_KEY_BASE=ba0fa41f86be249074a54f30050529b80f224f4a8894619f847e3c4560f47a16d7b67d320923b25aa634dcb72abc1fc1c47975e8fb829b0a252a7f5fa428b8ee
     depends_on:
       - db
     ports:
-    - 3000:3000
-    
+      - 3000:3000
 
+  test:
+    build: ./PyHeartbeatTest
+    depends_on:
+      - mqtt5Monitor
+      - cppscheduler
+      - pyheartbeat
+      - pyrobots
+    volumes:
+      - ./PyHeartbeatTest/testlog.txt:/usr/app/src/testlog.txt:rw
 
   mqtt5Mongodb:
     image: eclipse-mosquitto

@@ -1,7 +1,7 @@
 import paho.mqtt.client as mqtt
 import json
 import time
-
+import random
 
 
 broker = 'mqtt5monitor'
@@ -18,14 +18,19 @@ def on_message(client, userdata, msg):
     ErrorMessageReceived = True
     end_time = time.time()
     response_time = end_time - start_time
+    f = open("testlog.txt", "a")
     #print(start_time)
     #print(end_time)
-    print(f"Received Error response in {response_time} seconds")
+    response = f" Received Error response in {response_time} seconds \n"
+    print(response)
+    f.write(response)
+    f.close
+    f = open("testlog.txt", "r")
+    print(f.read())
+    f.close
     client.publish("Robots/test", "EndTest")
     print("End Test")
-    client.disconnect() # disconnect gracefully
-    client.loop_stop()
-
+    
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code "+str(rc))
     
@@ -34,7 +39,9 @@ def on_connect(client, userdata, flags, rc):
 
 def Heartbeat(client):
     while(True):
-        time.sleep(30)
+        sleep_time = random.uniform(20, 30)
+        time.sleep(sleep_time)
+        
         global ErrorMessageReceived, start_time
         ErrorMessageReceived = False
         start_time = time.time()
