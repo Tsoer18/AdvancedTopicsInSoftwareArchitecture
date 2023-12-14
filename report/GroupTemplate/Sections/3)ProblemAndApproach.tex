@@ -1,0 +1,58 @@
+
+\emph{Problem.}
+The topic examined in this project concerns software architecture. Specifically, how software architecture can accommodate different quality attributes and how such an accommodation affects the overall solution through trade-offs. The requirements of the system are as follows:
+ 
+\begin{enumerate}
+    \item Production software must be able to exchange and coordinate information to execute a production and change production
+    \item Production software must run 24/7
+    \item Production software must be continuously deployable
+    \item The solution must include different programming languages
+    \item The solution must include databases
+    \item The solution must include message buses
+    \item The solution must include containers
+    \item The solution must include point-to-point communication
+    \item The solution must include different architectural styles
+    \item The solution must include different architectural patterns/tactics
+    \item The Scheduling system should send a response in 15 seconds to the user interface
+    \item The on site technician should get an alert in 2 seconds after the monitoring system finds out a robot is dead
+    \item The change to the code base is tested and deployed in under 2 minutes to the google cloud VM
+    \item 4 seconds after a new robot is added to the system its log data should be visible 
+\end{enumerate}
+This list is a combination of the formal requirements for our system and requirements that we have set for the system to be able to comply with. The quality attributes that these requirements seeks to adress are the following:
+\emph{quality attributes}:
+\begin{enumerate}
+    \item Interoperability
+    \item Availability
+    \item Deployability
+    \item Performance
+    \item Scalability
+\end{enumerate}
+
+In the specific context of this project, we are going to design the architecture to accommodate the above-mentioned quality attributes and thereby answer the following research questions:
+
+\emph{Research questions:}
+\begin{enumerate}
+    \item How can different architectures support the stated production system requirements?
+    \item Which architectural trade-offs must be taken due to the technology choices?
+    \item How can a software system for tank production achieve high interoperability?
+    \item What availability strategies can be applied to a software system for a tank production line?
+    \item How can a software system for a tank production line become scalable? 
+    \item What can be done to increase performance of a software system for a tank production line?
+    \item How does a software system for a tank production line achieve deployability?
+\end{enumerate}
+The first 2 research questions are in regard to the reflections made with the choices for architecture and technologies chosen for this project.
+The rest of the research questions (3-7) are regarding how you consider different quality attributes when designing a system like this. 
+
+\emph{Approach.}
+The following steps are taken to answer this paper's research questions: 
+\begin{enumerate}
+    \item Conduct a literature review to understand state of the art in the field that we are exploring
+    \item  Expand on the case that we have decided to work on by defining use cases and quality attribute scenarios.
+    \item Design the system in a way to incorporate tactics to accommodate all of the different quality attributes that the design should consider
+    \item Build the system in accordance with our findings from the literature review and design phase of this project. 
+    \item Verify that some of the selected quality attributes have been prioritized in our designs by testing the system.
+\end{enumerate}
+
+In general, this team set out to accommodate a bunch of different quality attributes that they found relevant for the project, but the evaluation of the system only revolves around availability.
+
+

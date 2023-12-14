@@ -1,0 +1,52 @@
+
+This section talks about how the proposed solution was evaluations. This is divided into 4 parts.
+\begin{enumerate}
+    \item In section \ref{sec:design} the design of the experiment is going to be explained. 
+    \item The section \ref{sec:measurements} is going to elaborate on what measurements the evaluation is going to make.
+    \item In section \ref{sec:pilot_test} will describe the pilot test.
+    \item And at last the section \ref{sec:analysis} is going to consist of an analysis of the output from the experiment.
+\end{enumerate}
+
+
+\subsection{Experiment design}
+\label{sec:design}
+This phase revolves around creating an experiment which is simulating real-world scenarios where the system must withstand potential disruptions. Experiments are created because we want control over the situation and want to manipulate behavior. The experimental design focuses not only on the ideal functioning of the system but also on its resilience in the face of unforeseen challenges, echoing the demands of a robust Industry 4.0 environment. It helps to confirm theories, and validate measurements. 
+
+When developing our Quality attribute scenarios (QAS), including performance, scalability, deployability and availability.
+The primary goal of our experiment is designed to assess the system's responsiveness when a robot is turned off. The objective is to measure the duration it takes for the system to recognize the systematically turning off of the robot to observe the systems real-time response. 
+
+Our experiment comprises a subsystem that interfaces with the MQTT Message bus, responsible for managing the overall system. Upon connecting, the subsystem initiates a 30-second wait period to ensure the entire system stabilizes. Following this, it dispatches an MQTT Topic to commence the test.
+The robot, subscribed to this topic, ceases its heartbeat functionality upon receiption. Simultaneously, the monitoring system notes the absence of the expected heartbeat response within 1.5 seconds, triggering an error message on the message bus. This error message is subscribed to by the scheduler, which, upon detection, transmits a relevant topic via the message bus to the admin interface.
+The test subsystem, actively subscribed to the scheduler's admin topic, promptly intercepts the message, logging the elapsed time between test initiation and the scheduler's topic arrival. This structured approach allows for the systematic observation and analysis of the system's behavior during the experiment. 
+
+
+
+\subsection{Measurements}
+\label{sec:measurements}
+To gauge the effectiveness of the system's availability, specific measurements are employed. The experiment focuses on determining the system's response time when detecting the shutdown of one of our robots. The goal is to observe how long it takes for the system to recognize the robot being turned off and subsequently send a notification to our operator. This information is vital for the operator to make informed decisions about whether a system restart is needed or if there are errors or faults in connection with the robot that require repair. The combination of these measurements and observations provides a comprehensive understanding of the system's performance in terms of fault detection. 
+
+
+\subsection{Pilot test}
+\label{sec:pilot_test}
+A pilot test\cite{Pilot} is executed to validate the chosen measurements and ensure the overall feasibility of the experiment. This initial phase allows for the fine-tuning of the experimental setup. It serves as a proactive measure to identify potential challenges, address unforeseen variables, and refine the data collection process.
+
+The pilot test acts as a strategic checkpoint, ensuring that the subsequent full-scale evaluation is conducted with precision and reliability. Any insights gained during this phase contribute to the optimization of the experimental framework, fostering a more robust and reliable assessment of the system's availability.
+In our pilot test, we focus on evaluating the system's responsiveness by measuring the time it takes for the system to detect a fault, specifically when one of our robots is turned off. The test is conducted 19 times to gather data on the system's consistent reaction time and its efficiency in promptly notifying our operator. This iterative approach allows us to analyze variations in the system's behavior and assess the reliability of the notification process. 
+The average time of the tests show that the system will notify the operator in about 2.45 seconds. The test results can be seen in the appendix \ref{sec:testresults}
+
+\subsection{Analysis}
+\label{sec:analysis}
+The analysis phase involves a comprehensive examination of the output derived from the experiment. The focus is on interpreting the collected data, drawing insights into the system's performance in terms of availability, and assessing the impact of the implemented heartbeat system.
+
+This structured evaluation approach aims to provide a nuanced understanding of how well the system meets the specified quality attribute, offering insights into its reliability, fault detection, and overall operational continuity.
+
+The test results indicate that, while the average is close to the QAS expected 2 seconds, there are outliers reaching 3.47 seconds. This suggests that the current monitor-to-scheduler-to-repair crew architecture may not be optimal for achieving the desired QAS expected time.
+
+The team designed the architecture with the intention of allowing the scheduler to utilize error information for code-based mitigation, rather than solely relying on the repair crew. However, the chosen 2-second timeframe is crucial, as prolonged downtime for the robots could adversely impact other systems. To meet this timeframe, a potential solution could involve optimizing communication flow. For instance, having both the admin and scheduler subscribe to the monitoring system's message simultaneously could eliminate the need for the repair crew to wait for the scheduler to process the message, thereby reducing the overall processing time.
+
+The test results suggest that the heartbeat subsystem is functioning as expected. However, upon closer examination, it becomes apparent that there is room for improvement in the communication architecture. Considering these findings, it becomes evident that while the heartbeat subsystem meets expectations, the overall communication structure could potentially be enhanced for optimal performance. 
+
+Even in the absence of a dedicated test for the GitHub workflow, the system's deployment performance remained crucial to meeting quality attribute scenarios. The team focused on the CI/CD workflow, tracking the time it took for various processes. The fastest execution time observed was around 3 minutes, which is slightly beyond the anticipated 2-minute target.
+
+Upon closer analysis, it became evident that a significant portion of the 3-minute timeframe was allocated to building Docker images. In contrast, the deployment on the server itself took only about 20 to 30 seconds. This observation highlights the need to optimize the Docker image building process to better align with the specified quality attribute scenario for deployment time. This can be seen in the image of the workflow in the appendix \ref{sec:github_workflow}
+

@@ -21,7 +21,7 @@ on:
   # Environment Variables
 env:
   DOCKER_IMAGE_NAME: lowercase-image-name
-  PROJECT_NAME: ProjectName
+  PROJECT_NAME: TankProduction
   GROUP_NUMBER: GroupNumber #I.e  Group02 
 
 jobs:

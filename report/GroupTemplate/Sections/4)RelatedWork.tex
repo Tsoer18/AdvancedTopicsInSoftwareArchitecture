@@ -1,0 +1,21 @@
+
+This Section addresses existing contributions by examining software architectures solution in the I4.0 domain, as well as a look into programming languages and databases used for similar I4.0 systems. 
+In total, 8 papers were examined.
+
+When working with complex applications one should decide on a set of non-functional requirements, in the form of quality attributes. It is important to determine these quality attributes before deciding on an architecture, as some architectures may be more suitable for achieving certain quality attributes.\cite{8417118}
+
+In \cite{8436369} the paper has a focus on, real-time capability, maintainability, flexibility, reusability, and portability. From these quality attributes, they chose to work with a monolithic architecture, where they containerized real-time control applications. With modularization, the system is maintainable, as the code complexity is managed by being able to isolate changes in specific modules.
+
+To contrast this, in \cite{8387665}, they are utilizing the microservice architecture, as they have a focus on scalability and availability by utilizing cloud computing. Scalability is achieved as you can scale individual services to meet requirements, whereas a monolithic architecture is scaled as a whole.
+In \cite{7915594}\cite{GOLDSCHMIDT201828} they also use a microservice architecture and separate domain logic into individual independent services and use orchestration to have centralized control over the containerized services, allowing for starting, migrating, terminating, and scaling of services.
+
+In \cite{article} the focus lies on which architecture is best suited in terms of security when developing systems for Industry 4.0. using a microservice architecture. By separating domain logic into individual independent services, the attack surface is greatly reduced and thereby the security is increased.
+
+In \cite{9659378} they present a modular software architecture for a Robotic Operating System for robotic work cells. As this is an operating system that is installed in each robot at every workstation, there is no need for scalability and the modular approach is practical while still allowing the software to achieve quality attributes, such as maintanability, flexibility, etc.
+
+In \cite{10.1145/2790755.2790772} they use MongoDB for large-scale log analysis. The paper concluded that MongoDB is viable for high-performance loading and analysis of data logs, while also being scalable.
+
+In \cite{876288} they found that C++ has an on average a lower runtime compared to many other programming languages, such as python, java, etc.
+
+The contributions provide valuable insight into answering our research questions. From these articles we argue that a microservice architecture would be the best fit for the production system. The reasoning for this is that a microservice architecture allows for easy and individual deployability, as the domain logic is separated into individual independent services. With a microservice architecture each service can be easily dockerized and deployed in the cloud. Cloud computing is efficient in scalability as you can spin up containers as needed, as well as availability, as you can add backup pods of services, in case one should encounter a fault. You can also implement monitoring on services and other availability tactics.
+High interoperability is also achievable through a microservice architecture, as a microservice architecture allows for loose coupling between services, depending on the chosen communication protocol. In this case we've chosen to work with MQTT message busses, which utilizes a publish/subscribe pattern.

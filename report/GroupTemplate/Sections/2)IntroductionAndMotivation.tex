@@ -1,0 +1,15 @@
+
+In Industry 4.0 one of the most important decisions are the design of the system architecture. By defining quality attributes and creating an accommodating architecture, systems can be tailored to solve very specific system needs. This paper is concerned with the development, design, and evaluation of the software of a tank production system in an industry 4.0 setting. The primary quality attributes of this paper are interoperability, availability, and deployability. This means that different parts of the system should be able to communicate with each other regardless of what technologies are being used. This is going to be achieved by utilizing message buses and a shared communication protocol. In addition to this, the system also aims at being able to run 24/7, which is going to be enforced by fault detection tactics such as a heartbeat censor. Finally, the system also requires to have some strategy to allow for continuous deployment, which will be accounted for by having a GitHub actions pipeline that builds and deploys the system every time changes are pushed to the master branch of the project.    
+
+
+The structure of the paper is as follows. 
+
+Section \ref{sec:problem} clarifies the research questions that the paper seeks to answer, the major requirements for the system, as well as the chosen approach for answering the research questions and fulfilling the requirements.
+
+Section \ref{sec:related_work} describes relevant current research on the topic and how this paper contributes to this particular field of research.
+
+Section \ref{sec:use_case} presents the template and an example of the designed use cases for the factory. The remaining use cases can be found in the appendix \ref{sec:apusecase}.  
+
+Section \ref{sec:middleware_architecture} describes the proposed solution to satisfy the quality attribute scenarios, while explaining the choices for the solution. The section also describes potential trade-offs to the solution.  
+
+Section \ref{sec:evaluation} showcases how the system was finally evaluated by firstly explaining the design of the experiment, the measurements, then the pilot test and at last the analysis. This all functions as a way to verify one of the quality attributes. 

@@ -1,0 +1,12 @@
+
+Due to the time constraints of the assignment, there were some use cases that were not implemented. Given more time, we would have implemented the following:
+
+The inventory system, which would have allowed the system to keep a record of all available parts in stock and order new ones if required parts were not available in storage. Having a functional storage system is essential so that the parts required for the production can be kept in stock and replenished as needed.
+
+A configuration system, which would have been able to configure the robots for specific work orders. The configuration system would receive a work order from the scheduler and create strings that can be interpreted by the robots to configure for a specific work order. Once created, these strings would be sent back to the scheduler.
+
+With more time the scheduling system would be expanded, to tie together the inventory system, the robots, and the configuration system. Additionally to scheduling work orders and ensuring that the work orders are completed correctly, the scheduler would send a work order to the inventory system, which checks if the required parts are in stock and whether there is a need to order any parts. The scheduler then sends the work order to the configuration system and receives the configuration string, which it then sends to the robots which completes the work orders.
+
+Besides the aforementioned system functionality, an admin profile should be added, since it would be required to maintain and administrate the system, should there be any hiccups. 
+
+Lastly, more testing could have been done. Specifically, tests to ensure that all of our quality attribute scenarios were fulfilled and if not, discover which ones were not, so that we could ensure the implementation and success of those quality attribute scenarios.
